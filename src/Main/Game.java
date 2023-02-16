@@ -3,6 +3,7 @@ package Main;
 public class Game {
 
     private GameWindow gameWindow;
+    //testing
     private GamePanel gamePanel;
     public Game(){
 
