@@ -3,17 +3,19 @@ package Main;
 import Inputs.KeyboardInputs;
 import Inputs.MouseInputs;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Random;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GamePanel extends JPanel {
 
+    private BufferedImage img, subImg;
     private MouseInputs mouseInputs;
     private float xDelta = 100.0F, yDelta = 100.0F;
-    private float xDir = 1F, yDir = 1F;
-    private Color color = new Color(100,100,100);
-    private Random random = new Random();
+
     private int frames;
     private long lastCheck;
     public GamePanel(){
@@ -22,7 +24,16 @@ public class GamePanel extends JPanel {
         addKeyListener( new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
+        setPanelSize();
+        importImg();
 
+    }
+
+    private void setPanelSize() {
+        Dimension size = new Dimension(1280, 800);
+        setMinimumSize(size);
+        setPreferredSize(size);
+        setMaximumSize(size);
     }
 
     public void changeXDelta(int value){
@@ -40,31 +51,23 @@ public class GamePanel extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g); // JComponent method
-        updateRectangle();
-        //g.drawRect(100, 100, 200, 50)
-        g.setColor(color);
-        g.fillRect((int) xDelta, (int) yDelta, 200, 50);
+
+        //This will allow us to only see one image
+        //subImg = img.getSubimage(0,0, 64,40); // row 1 column 1 image in sprite sheet
+        subImg = img.getSubimage(1*64, 2*40, 64,40); // row 2 column 3 image in sprite sheet
+        g.drawImage(subImg, (int) xDelta, (int) yDelta, 120, 80, null);
+
     }
 
-    public void updateRectangle(){
-        xDelta += xDir;
-        yDelta += yDir;
-        if (xDelta > 400 || xDelta < 0){
-            xDir *= -1;
-            color = getRandColor();
-        }
-        if (yDelta > 400 || yDelta < 0){
-            yDir *= -1;
-            color = getRandColor();
+    private void importImg(){
+        InputStream is = getClass().getResourceAsStream("/player_sprites.png");
+        try{
+            img = ImageIO.read(is);
+        }catch(IOException e ){
+            e.printStackTrace();
         }
     }
 
-    public Color getRandColor(){
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
 
-        return new Color(r,g,b);
-    }
 
 }
