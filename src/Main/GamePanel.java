@@ -62,9 +62,7 @@ public class GamePanel extends JPanel {
 
     public void paintComponent(Graphics g){
         super.paintComponent(g); // JComponent method
-        updateAnimationTick();
-        setAnimations();
-        updatePos();
+
         //This will allow us to only see one image
         //subImg = img.getSubimage(0,0, 64,40); // row 1 column 1 image in sprite sheet
         //subImg = img.getSubimage(1*64, 2*40, 64,40); // row 2 column 3 image in sprite sheet
@@ -128,5 +126,11 @@ public class GamePanel extends JPanel {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    public void updateGame() {
+        updateAnimationTick();
+        setAnimations();
+        updatePos();
     }
 }
